@@ -410,6 +410,23 @@ on boot
    class_start default
    class_start core
 
+#ifdef VENDOR_EDIT
+# liangkun@Swdp.shanghai, 2016/02/03, for sdcardfs support
+on property:sys.sdcardfs.fs_upgraded=1
+    mkdir /data/media 0770 media_rw media_rw
+    chown media_rw media_rw /data/media
+    mount sdcardfs /data/media /mnt/shell/emulated nosuid nodev rw seclabel,derive=legacy,reserved_mb=50
+    wait /mnt/shell/emulated/0
+#    mount none /mnt/shell/emulated/0 /storage/emulated/legacy bind
+	symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+#endif /* VENDOR_EDIT */
+#ifdef VENDOR_EDIT
+# fangpan@Swdp.shanghai, 2016/02/26, fix the data can't umount for the data cryptfs
+on property:sys.sdcardfs.fs_upgraded=0
+    umount /storage/emulated/legacy
+    umount /mnt/shell/emulated
+#endif /* VENDOR_EDIT */
+
 on nonencrypted
     class_start main
     class_start late_start
@@ -423,6 +440,10 @@ on property:vold.decrypt=trigger_encryption
 
 on property:vold.decrypt=trigger_reset_main
     class_reset main
+#ifdef VENDOR_EDIT
+# fangpan@Swdp.shanghai, 2016/02/26, fix the data can't umount for the data cryptfs
+    setprop sys.sdcardfs.fs_upgraded 0
+#endif
 
 on property:vold.decrypt=trigger_load_persist_props
     load_persist_props
@@ -442,6 +463,10 @@ on property:vold.decrypt=trigger_restart_framework
 on property:vold.decrypt=trigger_shutdown_framework
     class_reset late_start
     class_reset main
+#ifdef VENDOR_EDIT
+# fangpan@Swdp.shanghai, 2016/02/26, fix the data can't umount for the data cryptfs
+    setprop sys.sdcardfs.fs_upgraded 0
+#endif
 
 ## Daemon processes to be run by init.
 ##

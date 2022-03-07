@@ -175,6 +175,11 @@ subsystem adf
 /dev/block/platform/mtk-msdc.0/by-name/reserve2               0660   system     system
 #endif /*VENDOR_EDIT*/
 
+#ifdef VENDOR_EDIT
+#add by yanyin@Comm.OppoSimSettings,2016/12/31,add for findmyphone, OppoSimSettings
+/dev/block/platform/mtk-msdc.0/by-name/reserve1 0660 system system
+/dev/block/mmcblk0p3 0660 system system
+#endif  VENDOR_EDIT
 
 # sysfs properties
 /sys/devices/platform/trusty.*      trusty_version        0440  root   log
