@@ -66,11 +66,6 @@ TARGET_KERNEL_CONFIG := A37_defconfig
 # Platform
 TARGET_BOARD_PLATFORM := mt6750
 
-# Hack: prevent anti rollback
-PLATFORM_SECURITY_PATCH := 2099-12-31
-VENDOR_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 16.1.0
-
 # TWRP Configuration
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
